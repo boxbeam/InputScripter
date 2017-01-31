@@ -20,6 +20,7 @@ public class Keybind {
 	private boolean active = true;
 	private Runnable runnable;
 	private static List<Keybind> keybinds = new CopyOnWriteArrayList<>();
+	private long last = 0;
 	
 	public Keybind(int[] combo, Script action) {
 		this.combo = combo;
@@ -106,6 +107,10 @@ public class Keybind {
 	}
 	
 	private void activate() {
+		if (System.currentTimeMillis() - last < 100) {
+			return;
+		}
+		last = System.currentTimeMillis();
 		if (action.isRunning()) {
 			action.kill();
 			action.reset();

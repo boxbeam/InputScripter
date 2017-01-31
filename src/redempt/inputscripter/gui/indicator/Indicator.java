@@ -30,6 +30,7 @@ public class Indicator extends JDialog {
 		this.add(label);
 		this.setLocation(0, indicators.size() * 30);
 		this.setAlwaysOnTop(true);
+		this.setFocusable(false);
 		indicators.add(this);
 	}
 	
