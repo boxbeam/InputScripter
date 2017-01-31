@@ -56,10 +56,10 @@ public class ScriptHandler {
 						robot.mouseRelease(MouseEvent.BUTTON1_MASK);
 						break;
 					case "right":
-						robot.mouseRelease(MouseEvent.BUTTON2_MASK);
+						robot.mouseRelease(MouseEvent.BUTTON3_MASK);
 						break;
 					case "middle":
-						robot.mouseRelease(MouseEvent.BUTTON3_MASK);
+						robot.mouseRelease(MouseEvent.BUTTON2_MASK);
 						break;
 					default:
 						System.out.println("Unknown click type " + rest);
