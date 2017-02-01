@@ -127,6 +127,9 @@ public class Keybind {
 	public static void saveAll() throws IOException, URISyntaxException {
 		File folder = new File(new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile(), Main.dir);
 		folder.mkdirs();
+		for (File file : folder.listFiles()) {
+			file.delete();
+		}
 		int i = 0;
 		for (Keybind keybind : keybinds) {
 			File file = new File(folder, String.valueOf(i) + ".insc");
