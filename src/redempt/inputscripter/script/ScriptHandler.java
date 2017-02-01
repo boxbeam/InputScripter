@@ -5,9 +5,13 @@ import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 
+import redempt.inputscripter.Main;
 import redempt.inputscripter.gui.indicator.Indicator;
+import redempt.inputscripter.utils.Keybind;
 
 public class ScriptHandler {
 	
@@ -30,6 +34,7 @@ public class ScriptHandler {
 	}
 	
 	private static void runLines(String[] lines, Script script) {
+		int lineNum = -1;
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.startsWith("click ")) {
@@ -148,17 +153,52 @@ public class ScriptHandler {
 						script.getIndicator().hideIndicator();
 						script.setIndicator(null);
 					}
-					return;
 				} else {
-					i = -1;
+					i = lineNum;
 					continue;
 				}
+			}
+			if (line.equals("skip")) {
+				lineNum = i;
 			}
 			if (line.startsWith("indicator ")) {
 				String rest = line.replace("indicator ", "");
 				if (script.getIndicator() == null) {
 					script.setIndicator(new Indicator(rest));
 					script.getIndicator().showIndicator();
+				}
+			}
+			if (line.startsWith("setdir ")) {
+				try {
+					Keybind.saveAll();
+				} catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+				String rest = line.replace("setdir ", "");
+				for (Keybind keybind : Keybind.getAll()) {
+					keybind.unregister();
+				}
+				Main.dir = rest;
+				try {
+					Keybind.loadAll();
+				} catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+			if (line.startsWith("scroll ")) {
+				String rest = line.replace("scroll ", "");
+				try {
+					int amount = Integer.parseInt(rest);
+					robot.mouseWheel(amount);
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid number " + rest);
+				}
+			}
+			if (line.equals("hold")) {
+				script.hold = true;
+				if (script.keybind != null && script.keybind.pressed) {
+					i = lineNum;
+					continue;
 				}
 			}
 		}

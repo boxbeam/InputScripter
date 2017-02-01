@@ -16,27 +16,30 @@ public class KeyHandler {
 	
 	public static void init() throws NativeHookException {
 		GlobalScreen.registerNativeHook();
-		GlobalScreen.addNativeKeyListener(new NativeKeyAdapter() {
-			
-			@Override
-			public void nativeKeyPressed(NativeKeyEvent e) {
-				if (!pressed.contains(e.getKeyCode())) {
-					pressed.add(e.getKeyCode());
+		Thread thread = new Thread(() -> {
+			GlobalScreen.addNativeKeyListener(new NativeKeyAdapter() {
+				
+				@Override
+				public void nativeKeyPressed(NativeKeyEvent e) {
+					if (!pressed.contains(e.getKeyCode())) {
+						pressed.add(e.getKeyCode());
+					}
+					for (Runnable runnable : actions) {
+						runnable.run();
+					}
 				}
-				for (Runnable runnable : actions) {
-					runnable.run();
-				}
-			}
 
-			@Override
-			public void nativeKeyReleased(NativeKeyEvent e) {
-				pressed.remove((Integer) e.getKeyCode());
-				for (Runnable runnable : actions) {
-					runnable.run();
+				@Override
+				public void nativeKeyReleased(NativeKeyEvent e) {
+					pressed.remove((Integer) e.getKeyCode());
+					for (Runnable runnable : actions) {
+						runnable.run();
+					}
 				}
-			}
-			
+				
+			});
 		});
+		thread.start();
 	}
 	
 	public static List<Integer> getPressed() {

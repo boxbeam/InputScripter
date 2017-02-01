@@ -1,14 +1,17 @@
 package redempt.inputscripter.script;
 
 import redempt.inputscripter.gui.indicator.Indicator;
+import redempt.inputscripter.utils.Keybind;
 
 public class Script {
 	
 	private boolean stop = false;
 	private boolean running = false;
 	private boolean ended = false;
+	public boolean hold = false;
 	private String lines;
 	private Indicator indicator = null;
+	public Keybind keybind = null;
 	
 	public Script(String lines) {
 		this.lines = lines;
@@ -19,6 +22,10 @@ public class Script {
 		if (!stop) {
 			ScriptHandler.run(this);
 		}
+	}
+	
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 	
 	public void join() {
@@ -57,6 +64,7 @@ public class Script {
 		stop = false;
 		running = false;
 		ended = false;
+		hold = false;
 	}
 	
 	public boolean isStopped() {

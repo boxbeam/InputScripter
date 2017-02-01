@@ -18,11 +18,13 @@ public class Keybind {
 	private final int[] combo;
 	private final Script action;
 	private boolean active = true;
+	public boolean pressed = false;
 	private Runnable runnable;
 	private static List<Keybind> keybinds = new CopyOnWriteArrayList<>();
 	private long last = 0;
 	
 	public Keybind(int[] combo, Script action) {
+		action.keybind = this;
 		this.combo = combo;
 		this.action = action;
 		keybinds.add(this);
@@ -71,7 +73,10 @@ public class Keybind {
 				}
 			}
 			if (count == combo.length) {
+				pressed = true;
 				activate();
+			} else {
+				pressed = false;
 			}
 		};
 		KeyHandler.addAction(runnable);
@@ -107,7 +112,7 @@ public class Keybind {
 	}
 	
 	private void activate() {
-		if (System.currentTimeMillis() - last < 100) {
+		if (action.hold || System.currentTimeMillis() - last < 100) {
 			return;
 		}
 		last = System.currentTimeMillis();
