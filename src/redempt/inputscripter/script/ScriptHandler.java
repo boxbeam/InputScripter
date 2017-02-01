@@ -147,15 +147,8 @@ public class ScriptHandler {
 				System.out.println(rest);
 			}
 			if (line.equals("repeat")) {
-				if (script.isStopped()) {
-					script.end();
-					if (script.getIndicator() != null) {
-						script.getIndicator().hideIndicator();
-						script.setIndicator(null);
-					}
-				} else {
+				if (!script.isStopped()) {
 					i = lineNum;
-					continue;
 				}
 			}
 			if (line.equals("skip")) {
@@ -198,13 +191,11 @@ public class ScriptHandler {
 				script.hold = true;
 				if (script.keybind != null && script.keybind.pressed) {
 					i = lineNum;
-					continue;
 				}
 			}
 		}
 		script.end();
 		script.join();
-		script.reset();
 		if (script.getIndicator() != null) {
 			script.getIndicator().hideIndicator();
 			script.setIndicator(null);
