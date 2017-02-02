@@ -112,7 +112,7 @@ public class Keybind {
 	}
 	
 	private void activate() {
-		if (action.hold || System.currentTimeMillis() - last < 100) {
+		if (action.hold || System.currentTimeMillis() - last < 300) {
 			return;
 		}
 		last = System.currentTimeMillis();
