@@ -17,7 +17,7 @@ public class ScriptWindow extends JFrame {
 	
 	public ScriptWindow() {
 		super();
-		this.setSize(400, 300);
+		this.setSize(400, 320);
 		this.setTitle("Configuration");
 		this.setResizable(false);
 		JPanel panel = new JPanel();
