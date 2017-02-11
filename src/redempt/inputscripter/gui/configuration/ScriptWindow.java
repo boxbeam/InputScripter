@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class ScriptWindow extends JFrame {
@@ -28,7 +29,10 @@ public class ScriptWindow extends JFrame {
 		text = new JTextArea();
 		text.setSize(400, 300);
 		text.setVisible(true);
-		panel.add(text);
+		JScrollPane pane = new JScrollPane(text);
+		pane.setSize(400, 300);
+		pane.setVisible(true);
+		panel.add(pane);
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter() {
 			
